@@ -1,0 +1,184 @@
+// MENU SCREEN
+// Here is the logic behind the main menu screen
+// and its corresponding screens.
+class Menu {
+    field Animation anim; // animation instance
+    field int arrowPlace; // flag for arrow movements (1,2,3)
+    field int seed; // seed for random class
+    field boolean outsideMenu; // boolean to check if player is currently in instructions or credits screens
+
+    constructor Menu new() {
+        let anim = Animation.new(); // initialize an animation instance
+        let arrowPlace = 1;  // default arrow placing is the first button
+        let seed = 0; // initialize seed
+
+        return this;                 
+    }
+
+    // method to display the menu 
+    method int run() {
+        var char key; // the key currently presssed by the user
+        var boolean exit; // check if user exited the game
+
+        let exit = false;
+
+        do drawMenu(); // draw the actual menu buttons and title
+        do anim.arrow(4108); // draw the arrow
+
+        // MAIN MENU LOGIC
+        while(~exit) {
+    
+            while (key = 0) { // while the user has not pressed any key
+                let key = Keyboard.keyPressed();
+                let seed = seed + 1; // the seed is the time taken for the player to click on a key
+
+            }
+            if (key = 133 & ~(outsideMenu)) {  // down arrow is pressed
+                if (arrowPlace = 2){
+                    do eraseArrowLocation();
+                    let arrowPlace = 3;
+                    do showArrow();
+                }
+                if (arrowPlace = 1 ){
+                    do eraseArrowLocation();
+                    let arrowPlace = 2;
+                    do showArrow();
+
+               }
+            }
+            if (key = 131 & ~(outsideMenu)){ // up arrow is pressed
+                 if (arrowPlace = 2){
+                    do eraseArrowLocation();
+                    let arrowPlace = 1;
+                    do showArrow();
+                }
+                 if (arrowPlace = 3){
+                    do eraseArrowLocation();
+                    let arrowPlace = 2;
+                    do showArrow();
+                }
+            }
+
+            // menu actions
+            if (key = 128 & ~(outsideMenu)){ // player pressed enter
+                if (arrowPlace = 1) { // player pressed on 'play now'
+                    let exit = true;
+                }
+                if (arrowPlace = 2) { // player pressed on 'instructions'
+                    do openInstructionsScreen();
+                    let outsideMenu = true;
+                }
+                if (arrowPlace = 3) { // player pressed on 'credits'
+                    do openCreditsScreen();
+                    let outsideMenu = true;
+                }
+            }
+
+            if (key = 140) { // player pressed escape
+                if (arrowPlace = 2) { // clicked from 'instructions' screen
+                    do Screen.clearScreen();
+                    do drawMenu();
+                    let arrowPlace = 2;
+                    do showArrow();
+                    let outsideMenu = false;
+                }
+                if (arrowPlace = 3) { // clicked from 'credits' screen
+                    do Screen.clearScreen();
+                    do drawMenu();
+                    let arrowPlace = 3;
+                    do showArrow();
+                    let outsideMenu = false;
+                }
+            }
+
+
+        
+            while (~(key = 0)) { // waits for the key to be released
+                let key = Keyboard.keyPressed();
+            }
+
+        }
+
+
+        return arrowPlace;  // 1 for playnow 2 for intructions 3 for honors
+    }
+
+    // method to retrieve seed
+    method int getSeed() {
+        return seed;
+    }
+
+    // method to erase the arrow placement
+    method void eraseArrowLocation(){
+        if (arrowPlace = 1){do anim.eraseArrow(4108);}
+        if (arrowPlace = 2){do anim.eraseArrow(5196);}
+        if (arrowPlace = 3){do anim.eraseArrow(6252);}
+
+        return;
+
+    }
+
+    // method to draw the arrow in x place
+    method void showArrow(){
+        if (arrowPlace = 1){do anim.arrow(4108);}
+        if (arrowPlace = 2){do anim.arrow(5196);}
+        if (arrowPlace = 3){do anim.arrow(6252);}
+
+        return;
+    }
+
+    // method to draw the menu
+    method void drawMenu() {
+        do Output.moveCursor(5, 18);
+        do Output.printString("Who wants to be a millionaire?");
+        do Output.moveCursor(12, 28);
+        do Output.printString("Play Now");
+        do Output.moveCursor(15, 28);
+        do Output.printString("Instructions");
+        do Output.moveCursor(18, 28);
+        do Output.printString("Credits");
+        return;
+    }
+
+    // method to open the instructions screen
+    method void openInstructionsScreen() {
+        do Screen.clearScreen();
+        do Output.moveCursor(5,0);
+        do Output.printString("Welcome to the who wants to be a millionaire trivia game!");
+        do Output.println();
+        do Output.printString("To start playing, click on 'Play Now' in the main menu.");
+        do Output.println();
+        do Output.printString("You can move between answer slots using the arrows on the right");
+        do Output.println();
+        do Output.printString("side of the keyboard.");
+        do Output.println();
+        do Output.printString("To win, you need to answer correctly 9 questions in a row.");
+        do Output.println();
+        do Output.printString("If you answer wrong, it's game over.");
+        do Output.println();
+        do Output.printString("Good luck!");
+        do Output.moveCursor(22,0);
+        do Output.printString("Press 'Escape' to return");
+        return;
+    }
+
+    // method to open the credits screen
+    method void openCreditsScreen() {
+        do Screen.clearScreen();
+        do Output.moveCursor(5,15);
+        do Output.printString("Game was coded and designed by");
+        do Output.moveCursor(8,25);
+        do Output.printString("Omry Maor");
+        do Output.moveCursor(11,24);
+        do Output.printString("Roy Shpiner");
+        do Output.moveCursor(22,0);
+        do Output.printString("Press 'Escape' to return");
+        return;
+    }
+   
+    // method to dispose an instance of this class
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+    }
+}
