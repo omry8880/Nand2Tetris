@@ -5,6 +5,7 @@ This repository contains my full implementation of the Nand2Tetris course, compl
 Project Structure
 
 The project is divided into two main parts:
+
 Low-Level (Hardware): Folders 1–5
 
 These folders include HDL (Hardware Description Language) files that implement the foundational hardware components of a computer, including:
@@ -20,6 +21,7 @@ These folders include HDL (Hardware Description Language) files that implement t
     The CPU and overall computer architecture
 
 Each component was tested using the built-in hardware simulator provided by the course.
+
 High-Level (Software):  Folders 6–10
 
 These folders include Java implementations of the software tools that form the upper layers of the computer's architecture:
